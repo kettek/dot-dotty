@@ -35,7 +35,7 @@ const DotDotty = function(target, {isImmutable=false,isExpandable=true,throwErro
   return new Proxy(target, {
     get: (obj, prop) => {
       let parts = prop.split('.')
-      for (let i = 0; i < parts.length-1; i++) {
+      for (let i = 0; i < parts.length; i++) {
         let part = parts[i]
         obj = obj[part]
         if (obj === undefined) {
@@ -104,3 +104,4 @@ const DotDotty = function(target, {isImmutable=false,isExpandable=true,throwErro
 
 /** DotDotty export */
 export default DotDotty
+

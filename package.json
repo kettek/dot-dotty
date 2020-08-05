@@ -1,6 +1,6 @@
 {
   "name": "dot-dotty",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "Lazy dot-syntax object access via proxies",
   "main": "dist/index.js",
   "scripts": {
@@ -15,10 +15,11 @@
     "Proxy"
   ],
   "author": "Ketchetwahmeegwun T. Southall",
-  "license": "lGPL-3.0",
+  "license": "MPL-2.0",
   "devDependencies": {
     "jsdoc-md": "^7.0.0",
     "rollup": "^2.23.0",
     "rollup-plugin-terser": "^6.1.0"
-  }
+  },
+  "repository": "github:kettek/dot-dotty"
 }

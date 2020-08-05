@@ -1,0 +1,24 @@
+{
+  "name": "dot-dotty",
+  "version": "0.0.1",
+  "description": "Lazy dot-syntax object access via proxies",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "rollup src/index.mjs --file dist/index.js --format umd -p terser --name DotDotty",
+    "docs": "jsdoc-md -s src/index.mjs -m README.md"
+  },
+  "keywords": [
+    "dot",
+    "dot-syntax",
+    "lazy",
+    "Proxy"
+  ],
+  "author": "Ketchetwahmeegwun T. Southall",
+  "license": "lGPL-3.0",
+  "devDependencies": {
+    "jsdoc-md": "^7.0.0",
+    "rollup": "^2.23.0",
+    "rollup-plugin-terser": "^6.1.0"
+  }
+}

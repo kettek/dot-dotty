@@ -122,7 +122,7 @@ const DotDotty = function(target, {isImmutable=false,isExpandable=true,throwErro
  * @returns {Boolean} true if key is blacklisted
  */
 const isPrototypePolluted = function(key) {
-  return ['__proto__', 'constructor', 'prototype'].includes(key);
+  return ['__proto__', 'constructor', 'prototype'].includes(key)
 }
 
 /** DotDotty export */

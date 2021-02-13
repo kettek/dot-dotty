@@ -37,7 +37,7 @@ DotDotty return a Proxy against the given target object that can access properti
 | `options.isImmutable`  | Boolean? = `false` | Whether or not the target object should be changeable.                                                                               |
 | `options.isExpandable` | Boolean? = `true`  | Whether or not new values may be placed into the object. These include new array entries and new object entries.                     |
 | `options.throwErrors`  | Boolean? = `true`  | Whether or not to throw errors when invalid access or expansion occurs. If false, invalid access or expansion will return undefined. |
-| `options.preventPrototypeKeywords` | Boolean? = `true` | | Whether or not prototype keywords should be allowed within keys. If true, **__proto__**, **constructor**, and **prototype** will be silently truncated. If throwErrors is also true, an error will be thrown. |
+| `options.preventPrototypeKeywords` | Boolean? = `true` | Whether or not prototype keywords should be allowed within keys. If true, **__proto__**, **constructor**, and **prototype** will be silently truncated. If throwErrors is also true, an error will be thrown. |
 | `options.prefix`       | String? = `''`     | A prefix to add to the dot-notation string.                                                                                          |
 | `options.suffix`       | String? = `''`     | A suffix to add to the dot-notation string.                                                                                          |
 

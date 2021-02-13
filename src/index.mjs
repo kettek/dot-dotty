@@ -37,6 +37,7 @@
   * @param {Boolean} [options.isImmutable=false] Whether or not the target object should be changeable.
   * @param {Boolean} [options.isExpandable=true] Whether or not new values may be placed into the object. These include new array entries and new object entries.
   * @param {Boolean} [options.throwErrors=true] Whether or not to throw errors when invalid access or expansion occurs. If false, invalid access or expansion will return undefined.
+  * @param {Boolean} [options.preventPrototypeKeywords=true] Whether or not prototype keywords should be allowed within keys. If true, "__proto__", "constructor", and "prototype" will be silently truncated. If throwErrors is true, an error will be thrown.
   * @param {String} [options.prefix=""] A prefix to add to the dot-notation string.
   * @param {String} [options.suffix=""] A suffix to add to the dot-notation string.
   * @returns {Proxy} A proxy to the target object that can use dot-notation to access or create properties.
@@ -69,8 +70,12 @@ const DotDotty = function(target, {isImmutable=false,isExpandable=true,throwErro
       let prevPart
       for (let i = 0; i < parts.length-1; i++) {
         let part = parts[i]
-        if (preventPrototypeKeywords && isPrototypePolluted(part))
+        if (preventPrototypeKeywords && isPrototypePolluted(part)) {
+          if (throwErrors) {
+            throw new Error(`prototype keyword "${part}" disallowed`)
+          }
           continue
+        }
         if (!isNaN(part)) {
           part = Number(part)
         }

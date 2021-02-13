@@ -41,7 +41,7 @@
   * @param {String} [options.suffix=""] A suffix to add to the dot-notation string.
   * @returns {Proxy} A proxy to the target object that can use dot-notation to access or create properties.
   */
-const DotDotty = function(target, {isImmutable=false,isExpandable=true,throwErrors=true,prefix="",suffix=""}={}) {
+const DotDotty = function(target, {isImmutable=false,isExpandable=true,throwErrors=true,preventPrototypeKeywords=true,prefix="",suffix=""}={}) {
   return new Proxy(target, {
     get: (obj, prop) => {
       prop = prefix + prop + suffix
@@ -69,6 +69,8 @@ const DotDotty = function(target, {isImmutable=false,isExpandable=true,throwErro
       let prevPart
       for (let i = 0; i < parts.length-1; i++) {
         let part = parts[i]
+        if (preventPrototypeKeywords && isPrototypePolluted(part))
+          continue
         if (!isNaN(part)) {
           part = Number(part)
         }
@@ -112,6 +114,15 @@ const DotDotty = function(target, {isImmutable=false,isExpandable=true,throwErro
       return obj[parts[parts.length-1]] = value
     },
   })
+}
+
+/**
+ * Blacklist certain keys to prevent Prototype Pollution
+ * @param {String} key The Object key to check
+ * @returns {Boolean} true if key is blacklisted
+ */
+const isPrototypePolluted = function(key) {
+  return ['__proto__', 'constructor', 'prototype'].includes(key)
 }
 
 /** DotDotty export */

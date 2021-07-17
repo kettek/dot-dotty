@@ -38,13 +38,25 @@
   * @param {Boolean} [options.isExpandable=true] Whether or not new values may be placed into the object. These include new array entries and new object entries.
   * @param {Boolean} [options.throwErrors=true] Whether or not to throw errors when invalid access or expansion occurs. If false, invalid access or expansion will return undefined.
   * @param {Boolean} [options.preventPrototypeKeywords=true] Whether or not prototype keywords should be allowed within keys. If true, "__proto__", "constructor", and "prototype" will be silently truncated. If throwErrors is true, an error will be thrown.
+  * @param {Boolean} [options.removeLeadingDots=true] Whether or not to remove leading dots from the target. The effectively cleans ".prop.a" => "prop.a".
   * @param {String} [options.prefix=""] A prefix to add to the dot-notation string.
   * @param {String} [options.suffix=""] A suffix to add to the dot-notation string.
   * @returns {Proxy} A proxy to the target object that can use dot-notation to access or create properties.
   */
-const DotDotty = function(target, {isImmutable=false,isExpandable=true,throwErrors=true,preventPrototypeKeywords=true,prefix="",suffix=""}={}) {
+const DotDotty = function(target, {
+  isImmutable=false,
+  isExpandable=true,
+  throwErrors=true,
+  preventPrototypeKeywords=true,
+  removeLeadingDots=true,
+  prefix="",
+  suffix=""
+}={}) {
   return new Proxy(target, {
     get: (obj, prop) => {
+      if (removeLeadingDots) {
+        prop = prop.replace(/^[\.]*/g, '')
+      }
       prop = prefix + prop + suffix
       let parts = prop.split('.')
       for (let i = 0; i < parts.length; i++) {
@@ -65,6 +77,9 @@ const DotDotty = function(target, {isImmutable=false,isExpandable=true,throwErro
     },
     set: (obj, prop, value) => {
       if (isImmutable) return
+      if (removeLeadingDots) {
+        prop = prop.replace(/^[\.]*/g, '')
+      }
       prop = prefix + prop + suffix
       let parts = prop.split('.')
       let prevPart

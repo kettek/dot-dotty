@@ -30,16 +30,17 @@ If isExpandable is true(default), new arrays, objects, and keys are created when
 
 DotDotty return a Proxy against the given target object that can access properties via dot-syntax.
 
-| Parameter              | Type               | Description                                                                                                                          |
-| :--------------------- | :----------------- | :----------------------------------------------------------------------------------------------------------------------------------- |
-| `target`               | Object             | The target object to proxy DotDotty against.                                                                                         |
-| `options`              | Object             |                                                                                                                                      |
-| `options.isImmutable`  | Boolean? = `false` | Whether or not the target object should be changeable.                                                                               |
-| `options.isExpandable` | Boolean? = `true`  | Whether or not new values may be placed into the object. These include new array entries and new object entries.                     |
-| `options.throwErrors`  | Boolean? = `true`  | Whether or not to throw errors when invalid access or expansion occurs. If false, invalid access or expansion will return undefined. |
-| `options.preventPrototypeKeywords` | Boolean? = `true` | Whether or not prototype keywords should be allowed within keys. If true, **__proto__**, **constructor**, and **prototype** will be silently truncated. If throwErrors is also true, an error will be thrown. |
-| `options.prefix`       | String? = `''`     | A prefix to add to the dot-notation string.                                                                                          |
-| `options.suffix`       | String? = `''`     | A suffix to add to the dot-notation string.                                                                                          |
+| Parameter                          | Type               | Description                                                                                                                                                                                        |
+| :--------------------------------- | :----------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `target`                           | Object             | The target object to proxy DotDotty against.                                                                                                                                                       |
+| `options`                          | Object             |                                                                                                                                                                                                    |
+| `options.isImmutable`              | Boolean? = `false` | Whether or not the target object should be changeable.                                                                                                                                             |
+| `options.isExpandable`             | Boolean? = `true`  | Whether or not new values may be placed into the object. These include new array entries and new object entries.                                                                                   |
+| `options.throwErrors`              | Boolean? = `true`  | Whether or not to throw errors when invalid access or expansion occurs. If false, invalid access or expansion will return undefined.                                                               |
+| `options.preventPrototypeKeywords` | Boolean? = `true`  | Whether or not prototype keywords should be allowed within keys. If true, "**proto**", "constructor", and "prototype" will be silently truncated. If throwErrors is true, an error will be thrown. |
+| `options.removeLeadingDots`        | Boolean? = `true`  | Whether or not to remove leading dots from the target. The effectively cleans ".prop.a" => "prop.a".                                                                                               |
+| `options.prefix`                   | String? = `''`     | A prefix to add to the dot-notation string.                                                                                                                                                        |
+| `options.suffix`                   | String? = `''`     | A suffix to add to the dot-notation string.                                                                                                                                                        |
 
 **Returns:** Proxy — A proxy to the target object that can use dot-notation to access or create properties.
 

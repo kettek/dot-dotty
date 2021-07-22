@@ -135,6 +135,51 @@ const DotDotty = function(target, {
       }
       return obj[parts[parts.length-1]] = value
     },
+    deleteProperty: (obj, prop) => {
+      if (isImmutable) return
+      //
+      if (removeLeadingDots) {
+        prop = prop.replace(/^[\.]*/g, '')
+      }
+      prop = prefix + prop + suffix
+      let parts = prop.split('.')
+      let prevPart
+      for (let i = 0; i < parts.length-1; i++) {
+        let part = parts[i]
+        if (preventPrototypeKeywords && isPrototypePolluted(part)) {
+          if (throwErrors) {
+            throw new Error(`prototype keyword "${part}" disallowed`)
+          }
+          continue
+        }
+        if (!isNaN(part)) {
+          part = Number(part)
+        }
+        if (obj[part] === undefined) {
+          if (throwErrors) {
+            if (i === 0) {
+              throw new Error(`invalid target "${part}"\n${prop}\n^`)
+            } else {
+              throw new Error(`invalid target "${part}" in "${parts.slice(0, i).join('.')}"\n${prop}\n${" ".repeat(parts.slice(0, i).join('.').length)}^`)
+            }
+          }
+          return undefined
+        }
+        obj = obj[part]
+        prevPart = part
+      }
+      if (obj[parts[parts.length-1]] === undefined) {
+        if (throwErrors) {
+          if (parts.length-1 === 0) {
+            throw new Error(`invalid target "${parts[parts.length-1]}"\n${prop}\n^`)
+          } else {
+            throw new Error(`invalid target "${parts[parts.length-1]}" in "${parts.slice(0, parts.length-1).join('.')}"\n${prop}\n${" ".repeat(parts.slice(0, parts.length-1).join('.').length)}^`)
+          }
+        }
+        return undefined
+      }
+      return Reflect.deleteProperty(obj, parts[parts.length-1])
+    },
   })
 }
 

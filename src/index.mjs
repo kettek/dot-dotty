@@ -36,6 +36,7 @@
   * @param {Object} options
   * @param {Boolean} [options.isImmutable=false] Whether or not the target object should be changeable.
   * @param {Boolean} [options.isExpandable=true] Whether or not new values may be placed into the object. These include new array entries and new object entries.
+  * @param {Boolean} [options.expandOverNull=false] Whether or not null values should be treated as nonexistent for the purposes of expansion.
   * @param {Boolean} [options.throwErrors=true] Whether or not to throw errors when invalid access or expansion occurs. If false, invalid access or expansion will return undefined.
   * @param {Boolean} [options.preventPrototypeKeywords=true] Whether or not prototype keywords should be allowed within keys. If true, "__proto__", "constructor", and "prototype" will be silently truncated. If throwErrors is true, an error will be thrown.
   * @param {Boolean} [options.removeLeadingDots=true] Whether or not to remove leading dots from the target. The effectively cleans ".prop.a" => "prop.a".
@@ -46,6 +47,7 @@
 const DotDotty = function(target, {
   isImmutable=false,
   isExpandable=true,
+  expandOverNull=false,
   throwErrors=true,
   preventPrototypeKeywords=true,
   removeLeadingDots=true,
@@ -97,11 +99,11 @@ const DotDotty = function(target, {
         let nextPart = parts[i+1]
         if (nextPart !== undefined && isExpandable) {
           if (!isNaN(nextPart)) {
-            if (obj[part] === undefined || typeof obj[part] !== 'object') {
+            if (obj[part] === undefined || (obj[part] === null && expandOverNull) || typeof obj[part] !== 'object') {
               obj[part] = []
             }
           } else {
-            if (obj[part] === undefined || typeof obj[part] !== 'object') {
+            if (obj[part] === undefined || (obj[part] === null && expandOverNull) || typeof obj[part] !== 'object') {
               obj[part] = {}
             }
           }

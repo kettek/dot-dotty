@@ -178,7 +178,7 @@ const DotDotty = function(target, {
         }
         return undefined
       }
-      delete obj[parts[parts.length-1]]
+      return delete obj[parts[parts.length-1]]
     },
   })
 }

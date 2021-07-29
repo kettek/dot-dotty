@@ -60,7 +60,7 @@ const DotDotty = function(target, {
         prop = prop.replace(/^[\.]*/g, '')
       }
       prop = prefix + prop + suffix
-      let parts = prop.split('.')
+      let parts = prop.split('.').filter(v=>v!=='')
       for (let i = 0; i < parts.length; i++) {
         let part = parts[i]
         obj = obj[part]

@@ -1,6 +1,16 @@
 import test from 'ava'
 import DotDotty from '../src/index.mjs'
 
+test('Root', t => {
+  let obj = {
+    a: 1,
+    b: [2],
+  }
+  let dd = DotDotty(obj)
+
+  t.deepEqual(dd[''], obj)
+})
+
 test('Basic', t => {
   let obj = {
     a: 1,

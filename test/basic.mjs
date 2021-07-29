@@ -52,3 +52,15 @@ test('Delete', t => {
 
   t.deepEqual(dd['b'], undefined)
 })
+
+test('Leading Dot Removal', t => {
+  let obj = {
+    a: 1,
+  }
+
+  let dd = DotDotty({...obj})
+
+  t.deepEqual(dd['.a'], obj.a)
+  t.deepEqual(dd['..a'], obj.a)
+  t.deepEqual(dd['...a'], obj.a)
+})

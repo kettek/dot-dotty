@@ -64,3 +64,15 @@ test('Leading Dot Removal', t => {
   t.deepEqual(dd['..a'], obj.a)
   t.deepEqual(dd['...a'], obj.a)
 })
+
+test('Delete Missing', t => {
+  let obj = {
+    a: 1,
+    c: 3,
+  }
+
+  let dd = DotDotty({...obj}, {throwErrors: false, throwTraps: false})
+
+  delete dd['b']
+  t.deepEqual(dd[''], obj)
+})

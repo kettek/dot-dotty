@@ -38,6 +38,7 @@
   * @param {Boolean} [options.isExpandable=true] Whether or not new values may be placed into the object. These include new array entries and new object entries.
   * @param {Boolean} [options.expandOverNull=false] Whether or not null values should be treated as nonexistent for the purposes of expansion.
   * @param {Boolean} [options.throwErrors=true] Whether or not to throw errors when invalid access or expansion occurs. If false, invalid access or expansion will return undefined.
+  * @param {Boolean} [options.throwTraps=true] Whether or not to throw trap errors for set and delete. If false, invalid sets or deletes will be silently ignored.
   * @param {Boolean} [options.preventPrototypeKeywords=true] Whether or not prototype keywords should be allowed within keys. If true, "__proto__", "constructor", and "prototype" will be silently truncated. If throwErrors is true, an error will be thrown.
   * @param {Boolean} [options.removeLeadingDots=true] Whether or not to remove leading dots from the target. The effectively cleans ".prop.a" => "prop.a".
   * @param {String} [options.prefix=""] A prefix to add to the dot-notation string.
@@ -49,6 +50,7 @@ const DotDotty = function(target, {
   isExpandable=true,
   expandOverNull=false,
   throwErrors=true,
+  throwTraps=true,
   preventPrototypeKeywords=true,
   removeLeadingDots=true,
   prefix="",
@@ -91,7 +93,7 @@ const DotDotty = function(target, {
           if (throwErrors) {
             throw new Error(`prototype keyword "${part}" disallowed`)
           }
-          continue
+          return !throwTraps
         }
         if (!isNaN(part)) {
           part = Number(part)
@@ -116,7 +118,7 @@ const DotDotty = function(target, {
               throw new Error(`invalid target "${part}" in "${parts.slice(0, i).join('.')}"\n${prop}\n${" ".repeat(parts.slice(0, i).join('.').length)}^`)
             }
           }
-          return undefined
+          return !throwTraps
         }
         obj = obj[part]
         prevPart = part
@@ -130,13 +132,14 @@ const DotDotty = function(target, {
               throw new Error(`invalid target "${parts[parts.length-1]}" in "${parts.slice(0, parts.length-1).join('.')}"\n${prop}\n${" ".repeat(parts.slice(0, parts.length-1).join('.').length)}^`)
             }
           }
-          return undefined
+          return !throwTraps
         }
       }
-      return obj[parts[parts.length-1]] = value
+      obj[parts[parts.length-1]] = value
+      return true
     },
     deleteProperty: (obj, prop) => {
-      if (isImmutable) return
+      if (isImmutable) return false
       //
       if (removeLeadingDots) {
         prop = prop.replace(/^[\.]*/g, '')
@@ -150,7 +153,7 @@ const DotDotty = function(target, {
           if (throwErrors) {
             throw new Error(`prototype keyword "${part}" disallowed`)
           }
-          continue
+          return false
         }
         if (!isNaN(part)) {
           part = Number(part)
@@ -163,7 +166,7 @@ const DotDotty = function(target, {
               throw new Error(`invalid target "${part}" in "${parts.slice(0, i).join('.')}"\n${prop}\n${" ".repeat(parts.slice(0, i).join('.').length)}^`)
             }
           }
-          return undefined
+          return false
         }
         obj = obj[part]
         prevPart = part
@@ -176,7 +179,7 @@ const DotDotty = function(target, {
             throw new Error(`invalid target "${parts[parts.length-1]}" in "${parts.slice(0, parts.length-1).join('.')}"\n${prop}\n${" ".repeat(parts.slice(0, parts.length-1).join('.').length)}^`)
           }
         }
-        return undefined
+        return !throwTraps
       }
       return delete obj[parts[parts.length-1]]
     },

@@ -181,7 +181,12 @@ const DotDotty = function(target, {
         }
         return !throwTraps
       }
-      return delete obj[parts[parts.length-1]]
+      try {
+        delete obj[parts[parts.length-1]]
+      } catch(err) {
+        return !throwTraps
+      }
+      return true
     },
   })
 }

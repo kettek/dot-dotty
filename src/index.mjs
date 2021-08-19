@@ -153,7 +153,7 @@ const DotDotty = function(target, {
           if (throwErrors) {
             throw new Error(`prototype keyword "${part}" disallowed`)
           }
-          return false
+          return !throwTraps
         }
         if (!isNaN(part)) {
           part = Number(part)
@@ -166,7 +166,7 @@ const DotDotty = function(target, {
               throw new Error(`invalid target "${part}" in "${parts.slice(0, i).join('.')}"\n${prop}\n${" ".repeat(parts.slice(0, i).join('.').length)}^`)
             }
           }
-          return false
+          return !throwTraps
         }
         obj = obj[part]
         prevPart = part

@@ -1,6 +1,6 @@
 {
   "name": "dot-dotty",
-  "version": "0.9.3",
+  "version": "0.9.5",
   "description": "Lazy dot-syntax object access via proxies",
   "main": "dist/index.js",
   "scripts": {
